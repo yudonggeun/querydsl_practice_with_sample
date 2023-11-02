@@ -15,7 +15,7 @@ import study.querydsl.memberTeam.Team;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static study.querydsl.entity.QMember.*;
+import static study.querydsl.memberTeam.QMember.member;
 
 @SpringBootTest
 @Transactional

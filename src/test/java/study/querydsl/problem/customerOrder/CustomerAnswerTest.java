@@ -58,7 +58,7 @@ public class CustomerAnswerTest {
                                                         .select(c2.countDistinct())
                                                         .from(c2)
                                                         .where(c2.joined.year().eq(2021))
-                                        ),1
+                                        ), 1
                         )
                 )
                 .from(orders)
