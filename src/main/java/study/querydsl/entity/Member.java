@@ -11,9 +11,10 @@ import lombok.*;
 public class Member {
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
     private Long id;
+    @Column
     private String username;
+    @Column
     private int age;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")

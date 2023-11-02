@@ -8,6 +8,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -26,11 +27,12 @@ import study.querydsl.entity.Team;
 
 import java.util.List;
 
-import static com.querydsl.jpa.JPAExpressions.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static study.querydsl.entity.QMember.*;
-import static study.querydsl.entity.QTeam.*;
+import static com.querydsl.jpa.JPAExpressions.select;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static study.querydsl.entity.QMember.member;
+import static study.querydsl.entity.QTeam.team;
 
 @SpringBootTest
 @Transactional
@@ -157,7 +159,7 @@ public class QuerydslBasicTest {
 
         List<Member> result = factory.selectFrom(member)
                 .orderBy(member.username.desc())
-                .offset(1)
+                .offset(1) // 시작하는 row의 index
                 .limit(2)
                 .fetch();
 
@@ -278,6 +280,11 @@ public class QuerydslBasicTest {
                 .fetch();
 
         for (Tuple tuple : result) {
+            Member member = tuple.get(0, Member.class);
+
+            boolean loaded = emf.getPersistenceUnitUtil().isLoaded(member.getTeam());
+            assertThat(loaded).as("패치 조인 적용").isTrue();
+
             System.out.println("tuple = " + tuple);
         }
     }
@@ -290,8 +297,9 @@ public class QuerydslBasicTest {
         em.flush();
         em.clear();
 
-        Member findMember = factory.selectFrom(QMember.member)
-                .where(QMember.member.username.eq("member1"))
+        Member findMember = factory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
                 .fetchOne();
 
         boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
@@ -304,13 +312,14 @@ public class QuerydslBasicTest {
         em.clear();
 
         Member findMember = factory
-                .selectFrom(QMember.member)
-                .join(member.team, team).fetchJoin()
-                .where(QMember.member.username.eq("member1"))
+                .selectFrom(member)
+                .join(member.team, team)
+                .fetchJoin()
+                .where(member.username.eq("member1"))
                 .fetchOne();
 
         boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
-        assertThat(loaded).as("패치 조인 미적용").isTrue();
+        assertThat(loaded).as("패치 조인 적용").isTrue();
     }
 
     /**
@@ -319,12 +328,13 @@ public class QuerydslBasicTest {
     @Test
     public void subQuery() {
 
-        QMember memberSub = new QMember("memberSub");
+        QMember subQueryMember = new QMember("memberSub");
 
-        List<Member> result = factory.selectFrom(member)
+        List<Member> result = factory
+                .selectFrom(member)
                 .where(member.age.eq(
-                        select(memberSub.age.max())
-                                .from(memberSub)
+                        select(subQueryMember.age.max())
+                                .from(subQueryMember)
                 ))
                 .fetch();
 
@@ -334,6 +344,7 @@ public class QuerydslBasicTest {
 
     /**
      * 나이가 평균 이상인 회원
+     * Goe => Greater or equals
      */
     @Test
     public void subQueryGoe() {
@@ -356,9 +367,11 @@ public class QuerydslBasicTest {
 
         QMember memberSub = new QMember("memberSub");
 
-        List<Member> result = factory.selectFrom(member)
+        List<Member> result = factory
+                .selectFrom(member)
                 .where(member.age.in(
-                        select(memberSub.age)
+                        JPAExpressions
+                                .select(memberSub.age)
                                 .from(memberSub)
                                 .where(memberSub.age.gt(10))
                 ))
@@ -385,9 +398,14 @@ public class QuerydslBasicTest {
         }
     }
 
+    /*
+    sql case expression
+    https://www.w3schools.com/sql/sql_case.asp
+     */
     @Test
     public void basicCase() {
-        List<String> result = factory.select(member.age
+        List<String> result = factory
+                .select(member.age
                         .when(10).then("열살")
                         .when(20).then("스무살")
                         .otherwise("기타"))
@@ -577,14 +595,15 @@ public class QuerydslBasicTest {
     public void testBulkUpdate() {
 
         //1차 캐시 사용을 위한 조회
-        factory.selectFrom(member)
+        factory
+                .selectFrom(member)
                 .fetch();
 
         //update
         long count = factory
                 .update(member)
                 .set(member.username, "비회원")
-                .where(member.age.lt(28))
+                .where(member.age.lt(20))
                 .execute();
 
         //1차 캐시 초기화
@@ -594,7 +613,6 @@ public class QuerydslBasicTest {
         List<Member> result = factory
                 .selectFrom(member)
                 .fetch();
-
 
         for (Member member1 : result) {
             System.out.println("member1 = " + member1);
