@@ -1,11 +1,17 @@
-package study.querydsl.problem;
+package study.querydsl.problem.memberTeam;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
 
 /**
  * querydsl을 연습하기 위해서 문제를 만들었습니다.
@@ -19,6 +25,15 @@ public class MemberPracticeTest {
     EntityManager em;
     @Autowired
     JPAQueryFactory query;
+
+    @BeforeAll
+    static void data(@Autowired DataSource dataSource) {
+        try (Connection conn = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("/data/practice/member_team.sql"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @DisplayName("연습 문제 1 : Member 테이블을 전체 조회하는 쿼리 작성하기")
     @Test
@@ -186,6 +201,4 @@ public class MemberPracticeTest {
 
         // -- 끝 --
     }
-
-
 }

@@ -1,4 +1,4 @@
-package study.querydsl.problem;
+package study.querydsl.problem.memberTeam;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import study.querydsl.entity.Member;
-import study.querydsl.entity.Team;
+import study.querydsl.memberTeam.Member;
+import study.querydsl.memberTeam.Team;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -22,8 +22,8 @@ import java.util.List;
 
 import static com.querydsl.core.types.ExpressionUtils.count;
 import static org.assertj.core.api.Assertions.assertThat;
-import static study.querydsl.entity.QMember.member;
-import static study.querydsl.entity.QTeam.team;
+import static study.querydsl.memberTeam.QMember.member;
+import static study.querydsl.memberTeam.QTeam.team;
 
 /**
  * querydsl을 연습하기 위해서 문제를 만들었습니다.

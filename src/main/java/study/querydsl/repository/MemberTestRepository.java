@@ -2,20 +2,19 @@ package study.querydsl.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import study.querydsl.dto.MemberSearchCondition;
-import study.querydsl.entity.Member;
+import study.querydsl.memberTeam.Member;
 import study.querydsl.repository.support.Querydsl4RepositorySupport;
 
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
-import static study.querydsl.entity.QMember.member;
-import static study.querydsl.entity.QTeam.team;
+import static study.querydsl.memberTeam.QMember.member;
+import static study.querydsl.memberTeam.QTeam.team;
 
 @Repository
 public class MemberTestRepository extends Querydsl4RepositorySupport {

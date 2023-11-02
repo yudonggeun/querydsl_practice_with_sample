@@ -8,14 +8,14 @@ import org.springframework.stereotype.Repository;
 import study.querydsl.MemberTeamDto;
 import study.querydsl.QMemberTeamDto;
 import study.querydsl.dto.MemberSearchCondition;
-import study.querydsl.entity.Member;
+import study.querydsl.memberTeam.Member;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.util.StringUtils.*;
-import static study.querydsl.entity.QMember.*;
-import static study.querydsl.entity.QTeam.*;
+import static study.querydsl.memberTeam.QMember.member;
+import static study.querydsl.memberTeam.QTeam.team;
 
 @Repository
 public class MemberJpaRepository {

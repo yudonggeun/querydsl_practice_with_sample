@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.dto.MemberDto;
 import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
-import study.querydsl.entity.Member;
-import study.querydsl.entity.QMember;
-import study.querydsl.entity.Team;
+import study.querydsl.memberTeam.Member;
+import study.querydsl.memberTeam.QMember;
+import study.querydsl.memberTeam.Team;
 
 import java.util.List;
 
@@ -31,8 +31,8 @@ import static com.querydsl.jpa.JPAExpressions.select;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static study.querydsl.entity.QMember.member;
-import static study.querydsl.entity.QTeam.team;
+import static study.querydsl.memberTeam.QMember.member;
+import static study.querydsl.memberTeam.QTeam.team;
 
 @SpringBootTest
 @Transactional

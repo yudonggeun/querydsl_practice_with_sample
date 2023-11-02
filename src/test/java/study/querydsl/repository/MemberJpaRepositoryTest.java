@@ -1,20 +1,18 @@
 package study.querydsl.repository;
 
 import jakarta.persistence.EntityManager;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.MemberTeamDto;
 import study.querydsl.dto.MemberSearchCondition;
-import study.querydsl.entity.Member;
-import study.querydsl.entity.Team;
+import study.querydsl.memberTeam.Member;
+import study.querydsl.memberTeam.Team;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

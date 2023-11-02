@@ -9,8 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.MemberTeamDto;
 import study.querydsl.dto.MemberSearchCondition;
-import study.querydsl.entity.Member;
-import study.querydsl.entity.Team;
+import study.querydsl.memberTeam.Member;
+import study.querydsl.memberTeam.Team;
 
 import java.util.List;
 
