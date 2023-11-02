@@ -117,13 +117,22 @@ public class QuerydslBasicTest {
 //
 //        Member fetchFirst = factory.selectFrom(m).fetchFirst();
 
+        // fetchResults() 호출시에 count 쿼리와 select 쿼리 두방 나감.
+        // 이제는 분리해서 조회하는 것을 권장하는 듯
         QueryResults<Member> results = factory.selectFrom(member).fetchResults();
 
-        results.getTotal();
+        long resultSize = results.getTotal();
         List<Member> content = results.getResults();
 
-        long total = factory.selectFrom(member)
-                .fetchCount();
+        assertThat(resultSize).isEqualTo(content.size());
+
+//        복잡한 쿼리 (group by, having)에서 문제가 있어서 deprecated 적용이 된 fetchCount()
+//        long total = factory.selectFrom(member)
+//                .fetchCount();
+        Long totalCount = factory
+                .select(member.count())
+                .from(member)
+                .fetchOne();
     }
 
     /**

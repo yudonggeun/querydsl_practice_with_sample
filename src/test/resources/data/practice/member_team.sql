@@ -19,6 +19,6 @@ insert into member (`id`, `username`, `age`, `team_id`) values (6, 'bmember6', 4
 call next value for member_seq;
 insert into member (`id`, `username`, `age`, `team_id`) values (7, 'cmember7', 24, 1);
 call next value for member_seq;
-insert into member (`id`, `username`, `age`, `team_id`) values (8, 'tmember8', 50, 1);
+insert into member (`id`, `username`, `age`, `team_id`) values (8, 'tmember8', 50, 2);
 call next value for member_seq;
-insert into member (`id`, `username`, `age`, `team_id`) values (9, 'member9', 15, 1);
+insert into member (`id`, `username`, `age`, `team_id`) values (9, 'member9', 15, 2);
